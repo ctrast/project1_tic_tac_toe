@@ -2,10 +2,20 @@
   display: flex;
   justify-content: center;
 }
+p{
+    text-align: center;
+}
 .buttons {
   display: flex;
   align-items: baseline;
   justify-content: center;
+  
+}
+button{
+height: 50px;
+width: 50px;
+margin-bottom: 20px;
+margin-left: 20px;
 }
 .columns {
   
