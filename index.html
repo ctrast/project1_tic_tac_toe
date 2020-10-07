@@ -11,7 +11,7 @@
 <body>
     <p>Game objective: <br> </p>
     <p>Win a game by placing three X's or O'x in a row or diagonally<br>
-    
+
     </p>
     <p>Game Rules: <br> </p>
     <p>
@@ -20,31 +20,27 @@
         * Once a square is clicked the turn is over. <br>
     </p>
     <div class="buttons">
-        
+
         <button id="set-x">X</button>
         <button id="set-o">O</button>
     </div>
     <div id='gameBox'>
-        <div class='columns'>
-            <div class='square'>?</div>
-            <div class='square'>?</div>
-            <div class='square'>?</div>
-        </div>
-        <div class='columns'>
-            <div class='square'>?</div>
+        <div id='col1' class='columns'>
+            <div class='square'>x</div>
             <div class='square'>?</div>
             <div class='square'>?</div>
         </div>
-        <div class='columns'>
+        <div id='col2' class='columns'>
             <div class='square'>?</div>
+            <div class='square'>x</div>
             <div class='square'>?</div>
+        </div>
+        <div id='col3' class='columns'>
+            <div class='square'>x</div>
             <div class='square'>?</div>
+            <div class='square'>x</div>
         </div>
     </div>
-
-
-
-
     <script src="./js/main.js"></script>
 </body>
 

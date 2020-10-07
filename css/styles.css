@@ -2,23 +2,21 @@
   display: flex;
   justify-content: center;
 }
-p{
-    text-align: center;
+p {
+  text-align: center;
 }
 .buttons {
   display: flex;
   align-items: baseline;
   justify-content: center;
-  
 }
-button{
-height: 50px;
-width: 50px;
-margin-bottom: 20px;
-margin-left: 20px;
+button {
+  height: 30px;
+  width: 30px;
+  margin-bottom: 20px;
+  margin-left: 20px;
 }
 .columns {
-  
   width: 300px;
   height: 300px;
   border: solid black 5px;
