@@ -10,7 +10,16 @@
 //3. change the default value of a click to the current button value
 
 console.log("main is connected");
-
+winningCombo = [
+  [0, 3, 6],
+  [1, 4, 5],
+  [2, 5, 8],
+  [0, 4, 8],
+  [6, 4, 2],
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+];
 //Use strict to ensure clean code with variables
 ("use scrict");
 
@@ -20,9 +29,8 @@ const gameBox = document.querySelector("#gameBox");
 const col1 = document.querySelector("#col1");
 const col2 = document.querySelector("#col2");
 const col3 = document.querySelector("#col3");
-
-
-
+const squares = document.querySelectorAll(".square");
+const message = document.querySelector('.message')
 
 const changePlayer = (currentPlayer) => {
   console.log(`cur player before change is  ${currentPlayer.id}`);
@@ -38,6 +46,54 @@ const changePlayer = (currentPlayer) => {
   console.log(`cur player is NOW ${currentPlayer.id}`);
 };
 
+function recognizeWinner(currentPlayer){
+    col1.style.backgroundColor= 'grey';
+    col2.style.backgroundColor= 'grey';
+    col3.style.backgroundColor= 'grey';
+    winnerMessage = document.createElement('h1');
+    winnerMessage.textContent="Congrats player '"+currentPlayer.textContent+"' you've won the game";
+        message.appendChild(winnerMessage);
+    
+}
+
+function isWinner(currentPlayer) {
+  //select the squares for entries for the currentPlayer -
+  //iterate though the squares node collection - for each value that matches current player collect the index
+  //check the array for winning combos (if winning combo exist in the gameplay array = winner)
+  const squares = document.querySelectorAll(".square");
+
+  gamePlay = [];
+  for (let i = 0; i < squares.length; i++) {
+    if (squares[i].innerText === currentPlayer.textContent) {
+      gamePlay.push(i);
+    }
+  }
+  //check to see if the winningCombos are in gamePlay
+  winIndex = 0;
+  for (let i = 0; i < winningCombo.length; i++) {
+    console.log(`winningCombo 1 is ${winningCombo[i]}`);
+    winCombo = String(winningCombo[i]).split(",");
+
+    for (let wc = 0; wc < winCombo.length; wc++) {
+      if (gamePlay.includes(parseInt(winCombo[wc]))) {
+        console.log(`game play includes ${parseInt(winCombo[wc])}`);
+        winIndex = winIndex + 1;
+      }
+    }
+    if (winIndex === 3) {
+        console.log(`winIndex count is  ${winIndex}`);
+        console.log(`Player ${currentPlayer.textContent} is the Winner!!!`);
+        recognizeWinner(currentPlayer);
+        break;
+      }else{
+          winIndex=0;
+      }
+  }
+
+ 
+}
+
+
 function changeBoxValue(e) {
   if (playerX.style.backgroundColor === "green") {
     currentPlayer = playerX;
@@ -45,15 +101,15 @@ function changeBoxValue(e) {
     currentPlayer = playerO;
   }
 
-  console.log(`change box current player is ${currentPlayer.id}`);
+  // console.log(`change box current player is ${currentPlayer.id}`);
   if (currentPlayer.id === "set-x") {
-    console.log("X played a turn - O's turn");
+    //console.log("X played a turn - O's turn");
     e.target.textContent = "X";
   } else if (currentPlayer.id === "set-o") {
     e.target.textContent = "O";
-    console.log("O played a turn - X's turn");
+    //console.log("O played a turn - X's turn");
   }
-
+  isWinner(currentPlayer);
   changePlayer(currentPlayer);
 }
 

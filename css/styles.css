@@ -17,6 +17,9 @@ p {
     margin-left: 20px;
     margin-bottom: 20px;
 }
+.message{
+    justify-content: center;
+}
 
 .columns {
   width: 300px;
