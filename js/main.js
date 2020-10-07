@@ -12,7 +12,7 @@
 console.log("main is connected");
 winningCombo = [
   [0, 3, 6],
-  [1, 4, 5],
+  [1, 4, 7],
   [2, 5, 8],
   [0, 4, 8],
   [6, 4, 2],
