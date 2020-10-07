@@ -10,12 +10,14 @@ p {
   align-items: baseline;
   justify-content: center;
 }
-button {
-  height: 30px;
-  width: 30px;
-  margin-bottom: 20px;
-  margin-left: 20px;
+.div-butt{
+    height: 30px;
+    width: 30px;
+    border: black solid 3px;
+    margin-left: 20px;
+    margin-bottom: 20px;
 }
+
 .columns {
   width: 300px;
   height: 300px;
