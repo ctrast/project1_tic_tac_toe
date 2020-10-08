@@ -48,6 +48,7 @@ const changePlayer = (currentPlayer) => {
 };
 
 function recognizeWinner(currentPlayer) {
+    
   col1.style.backgroundColor = "grey";
   col2.style.backgroundColor = "grey";
   col3.style.backgroundColor = "grey";
@@ -55,18 +56,13 @@ function recognizeWinner(currentPlayer) {
   winnerMessage.setAttribute("justifyContent", "center");
   winnerMessage.textContent =
     "Congrats player '" + currentPlayer.textContent + "' you've won the game";
-    gamePlayMsg.textContent = "Click here for a new Game";
-  message.appendChild(winnerMessage);
 
-  
+  message.appendChild(winnerMessage);
+  msg="Click here for a new Game";
+  gameMessage(msg);
 }
-function gameMessage(currentPlayer) {
-  let msg = "";
-  if (currentPlayer.id === "set-x") {
-    msg = "X played a turn - O's turn";
-  } else if (currentPlayer.id === "set-o") {
-    msg = "O played a turn - X's turn";
-  }
+function gameMessage(msg) {
+    console.log(`message is ${msg}`)
   gamePlayMsg.textContent = msg;
 }
 
@@ -114,17 +110,23 @@ function changeBoxValue(e) {
 
   // console.log(`change box current player is ${currentPlayer.id}`);
   if (currentPlayer.id === "set-x") {
+    msg = "X played a turn - O's turn";
     e.target.textContent = "X";
   } else if (currentPlayer.id === "set-o") {
+    msg = "O played a turn - X's turn";
     e.target.textContent = "O";
   }
   isWinner(currentPlayer);
   changePlayer(currentPlayer);
-  gameMessage(currentPlayer);
+  gameMessage(msg);
 }
 gameBox.addEventListener("click", (e) => {
   //only allow new click if is square and is '?'
-  if (e.target.classList.contains("square") && e.target.textContent === "?" && col1.style.backgroundColor !== "grey") {
+  if (
+    e.target.classList.contains("square") &&
+    e.target.textContent === "?" &&
+    col1.style.backgroundColor !== "grey"
+  ) {
     changeBoxValue(e);
   }
 });
