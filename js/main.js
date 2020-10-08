@@ -55,7 +55,10 @@ function recognizeWinner(currentPlayer) {
   winnerMessage.setAttribute("justifyContent", "center");
   winnerMessage.textContent =
     "Congrats player '" + currentPlayer.textContent + "' you've won the game";
+    gamePlayMsg.textContent = "Click here for a new Game";
   message.appendChild(winnerMessage);
+
+  
 }
 function gameMessage(currentPlayer) {
   let msg = "";
@@ -119,23 +122,9 @@ function changeBoxValue(e) {
   changePlayer(currentPlayer);
   gameMessage(currentPlayer);
 }
-
-// col1.addEventListener("click", (e) => {
-//   //a box was clicked -
-//   changeBoxValue(e);
-// });
-// col2.addEventListener("click", (e) => {
-//   //a box was clicked -
-//   changeBoxValue(e);
-// });
-// col3.addEventListener("click", (e) => {
-//   //a box was clicked -
-//   changeBoxValue(e);
-// });
-
 gameBox.addEventListener("click", (e) => {
   //only allow new click if is square and is '?'
-  if (e.target.classList.contains("square") && e.target.textContent === "?") {
+  if (e.target.classList.contains("square") && e.target.textContent === "?" && col1.style.backgroundColor !== "grey") {
     changeBoxValue(e);
   }
 });

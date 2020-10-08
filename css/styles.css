@@ -3,6 +3,7 @@
   justify-content: center;
 }
 .buttons h3{
+    
     border:  solid grey 2px;
     padding: 10px;
     margin-left: 40px;
@@ -10,7 +11,7 @@
 .buttons {
   display: flex;
   align-items: baseline;
-  justify-content: center;
+  justify-content: space-around;
 }
 .div-butt {
   height: 30px;
