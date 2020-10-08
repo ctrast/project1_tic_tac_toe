@@ -2,23 +2,25 @@
   display: flex;
   justify-content: center;
 }
-p {
-  text-align: center;
+.buttons h3{
+    border:  solid grey 2px;
+    padding: 10px;
+    margin-left: 40px;
 }
 .buttons {
   display: flex;
   align-items: baseline;
   justify-content: center;
 }
-.div-butt{
-    height: 30px;
-    width: 30px;
-    border: black solid 3px;
-    margin-left: 20px;
-    margin-bottom: 20px;
+.div-butt {
+  height: 30px;
+  width: 30px;
+  border: black solid 3px;
+  margin-left: 20px;
+  margin-bottom: 20px;
 }
-.message{
-    justify-content: center;
+.message {
+  justify-content: center;
 }
 
 .columns {

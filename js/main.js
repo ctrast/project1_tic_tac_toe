@@ -30,7 +30,8 @@ const col1 = document.querySelector("#col1");
 const col2 = document.querySelector("#col2");
 const col3 = document.querySelector("#col3");
 const squares = document.querySelectorAll(".square");
-const message = document.querySelector('.message')
+const message = document.querySelector(".message");
+const gamePlayMsg = document.querySelector(".buttons h3");
 
 const changePlayer = (currentPlayer) => {
   console.log(`cur player before change is  ${currentPlayer.id}`);
@@ -46,14 +47,24 @@ const changePlayer = (currentPlayer) => {
   console.log(`cur player is NOW ${currentPlayer.id}`);
 };
 
-function recognizeWinner(currentPlayer){
-    col1.style.backgroundColor= 'grey';
-    col2.style.backgroundColor= 'grey';
-    col3.style.backgroundColor= 'grey';
-    winnerMessage = document.createElement('h1');
-    winnerMessage.textContent="Congrats player '"+currentPlayer.textContent+"' you've won the game";
-        message.appendChild(winnerMessage);
-    
+function recognizeWinner(currentPlayer) {
+  col1.style.backgroundColor = "grey";
+  col2.style.backgroundColor = "grey";
+  col3.style.backgroundColor = "grey";
+  winnerMessage = document.createElement("h1");
+  winnerMessage.setAttribute("justifyContent", "center");
+  winnerMessage.textContent =
+    "Congrats player '" + currentPlayer.textContent + "' you've won the game";
+  message.appendChild(winnerMessage);
+}
+function gameMessage(currentPlayer) {
+  let msg = "";
+  if (currentPlayer.id === "set-x") {
+    msg = "X played a turn - O's turn";
+  } else if (currentPlayer.id === "set-o") {
+    msg = "O played a turn - X's turn";
+  }
+  gamePlayMsg.textContent = msg;
 }
 
 function isWinner(currentPlayer) {
@@ -81,18 +92,15 @@ function isWinner(currentPlayer) {
       }
     }
     if (winIndex === 3) {
-        console.log(`winIndex count is  ${winIndex}`);
-        console.log(`Player ${currentPlayer.textContent} is the Winner!!!`);
-        recognizeWinner(currentPlayer);
-        break;
-      }else{
-          winIndex=0;
-      }
+      console.log(`winIndex count is  ${winIndex}`);
+      console.log(`Player ${currentPlayer.textContent} is the Winner!!!`);
+      recognizeWinner(currentPlayer);
+      break;
+    } else {
+      winIndex = 0;
+    }
   }
-
- 
 }
-
 
 function changeBoxValue(e) {
   if (playerX.style.backgroundColor === "green") {
@@ -103,14 +111,13 @@ function changeBoxValue(e) {
 
   // console.log(`change box current player is ${currentPlayer.id}`);
   if (currentPlayer.id === "set-x") {
-    //console.log("X played a turn - O's turn");
     e.target.textContent = "X";
   } else if (currentPlayer.id === "set-o") {
     e.target.textContent = "O";
-    //console.log("O played a turn - X's turn");
   }
   isWinner(currentPlayer);
   changePlayer(currentPlayer);
+  gameMessage(currentPlayer);
 }
 
 col1.addEventListener("click", (e) => {
