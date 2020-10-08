@@ -49,17 +49,21 @@ const changePlayer = (currentPlayer) => {
 
 function gameOver(currentPlayer, gameOverMsg) {
   console.log(`game over message is ${gameOverMsg}`);
-  col1.style.backgroundColor = "grey";
-  col2.style.backgroundColor = "grey";
-  col3.style.backgroundColor = "grey";
+
+  squares.forEach((element) => {
+    element.style.backgroundColor = "grey";
+  });
+
   playerX.style.backgroundColor = "grey";
   playerO.style.backgroundColor = "grey";
   winnerMessage = document.createElement("h1");
+  winnerMessage.setAttribute("text-align", "center");
   winnerMessage.textContent = gameOverMsg;
-
   message.appendChild(winnerMessage);
+
   newGameMsg = "Click here for a new Game";
   console.log(`new game message is ${newGameMsg}`);
+
   gameMessage(newGameMsg);
   gameMessageUpdateBackGround();
 }
@@ -107,9 +111,12 @@ function isWinner(currentPlayer) {
     } else {
       winIndex = 0;
     }
-   
   }
-  if (gamePlay.length === 5 && currentPlayer.id === "set-x" && gamePlayMsg.style.backgroundColor !== "green") {
+  if (
+    gamePlay.length === 5 &&
+    currentPlayer.id === "set-x" &&
+    gamePlayMsg.style.backgroundColor !== "green"
+  ) {
     //the game is a tie
     let tieMsg = "The game is a tie";
     gameOver(currentPlayer, tieMsg);
@@ -146,7 +153,34 @@ gameBox.addEventListener("click", (e) => {
     e.target.textContent === "?" &&
     col1.style.backgroundColor !== "grey"
   ) {
+    e.target.style.backgroundColor = "white";
     changeBoxValue(e);
+  }
+});
+
+//add mouse over to help identify the squares
+gameBox.addEventListener("mouseover", (e) => {
+  //only allow if is square is '?'
+  console.log(`mouse enter ${e.target}`);
+  if (
+    e.target.classList.contains("square") &&
+    e.target.textContent === "?" &&
+    col1.style.backgroundColor !== "grey"
+  ) {
+    e.target.style.backgroundColor = "green";
+  }
+});
+
+//add mouse out to change color back to white
+gameBox.addEventListener("mouseout", (e) => {
+  //only allow if is square is '?'
+  console.log(`mouse leave ${e.target}`);
+  if (
+    e.target.classList.contains("square") &&
+    e.target.textContent === "?" &&
+    col1.style.backgroundColor !== "grey"
+  ) {
+    e.target.style.backgroundColor = "white";
   }
 });
 
@@ -158,11 +192,9 @@ gamePlayMsg.addEventListener("click", (e) => {
 });
 
 function newGame() {
-  col1.style.backgroundColor = "white";
-  col2.style.backgroundColor = "white";
-  col3.style.backgroundColor = "white";
   squares.forEach((element) => {
     element.textContent = "?";
+    element.style.backgroundColor = "white";
   });
   playerO.style.backgroundColor = "grey";
   gamePlayMsg.style.backgroundColor = "white";
