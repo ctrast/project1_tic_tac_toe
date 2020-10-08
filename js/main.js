@@ -48,16 +48,14 @@ const changePlayer = (currentPlayer) => {
 };
 
 function gameOver(currentPlayer, gameOverMsg) {
-    console.log(`game over message is ${gameOverMsg}`);
-    col1.style.backgroundColor = "grey";
+  console.log(`game over message is ${gameOverMsg}`);
+  col1.style.backgroundColor = "grey";
   col2.style.backgroundColor = "grey";
   col3.style.backgroundColor = "grey";
   playerX.style.backgroundColor = "grey";
   playerO.style.backgroundColor = "grey";
   winnerMessage = document.createElement("h1");
-  winnerMessage.setAttribute("justifyContent", "center");
   winnerMessage.textContent = gameOverMsg;
- 
 
   message.appendChild(winnerMessage);
   newGameMsg = "Click here for a new Game";
@@ -81,6 +79,7 @@ function isWinner(currentPlayer) {
   //check the array for winning combos (if winning combo exist in the gameplay array = winner)
   const squares = document.querySelectorAll(".square");
   let winMsg = "";
+  let tieMsg = "";
   gamePlay = [];
   for (let i = 0; i < squares.length; i++) {
     if (squares[i].innerText === currentPlayer.textContent) {
@@ -88,11 +87,6 @@ function isWinner(currentPlayer) {
     }
   }
 
-  if (gamePlay.length === 5 && currentPlayer.id === "set-x") {
-    //the game is a tie
-    let tieMsg = "The game is a tie"
-    gameOver(currentPlayer, tieMsg)
-  }
   //check to see if the winningCombos are in gamePlay
   winIndex = 0;
   for (let i = 0; i < winningCombo.length; i++) {
@@ -113,6 +107,12 @@ function isWinner(currentPlayer) {
     } else {
       winIndex = 0;
     }
+   
+  }
+  if (gamePlay.length === 5 && currentPlayer.id === "set-x" && gamePlayMsg.style.backgroundColor !== "green") {
+    //the game is a tie
+    let tieMsg = "The game is a tie";
+    gameOver(currentPlayer, tieMsg);
   }
 }
 
@@ -132,9 +132,9 @@ function changeBoxValue(e) {
     playerTurnMsg = "O played a turn - X's turn";
     e.target.textContent = "O";
   }
-  
+
   changePlayer(currentPlayer);
-  
+
   gameMessage(playerTurnMsg);
 
   isWinner(currentPlayer);
@@ -167,15 +167,13 @@ function newGame() {
   playerO.style.backgroundColor = "grey";
   gamePlayMsg.style.backgroundColor = "white";
   gamePlayMsg.textContent = "X turn ready!";
-  winnerMessage.textContent ="";
+  winnerMessage.textContent = "";
   init();
 }
 
 //place code here to run at load of page
 function init() {
   //disable Player "O" button and change X to green as X goes first
-
-  console.log(`i am here`);
   playerX.style.backgroundColor = "green";
 }
 
