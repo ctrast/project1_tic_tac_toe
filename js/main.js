@@ -47,31 +47,31 @@ const changePlayer = (currentPlayer) => {
   console.log(`cur player is NOW ${currentPlayer.id}`);
 };
 
-function recognizeWinner(currentPlayer) {
-    
-  col1.style.backgroundColor = "grey";
+function gameOver(currentPlayer, gameOverMsg) {
+    console.log(`game over message is ${gameOverMsg}`);
+    col1.style.backgroundColor = "grey";
   col2.style.backgroundColor = "grey";
   col3.style.backgroundColor = "grey";
-  playerX.style.backgroundColor="grey";
-  playerO.style.backgroundColor="grey";
+  playerX.style.backgroundColor = "grey";
+  playerO.style.backgroundColor = "grey";
   winnerMessage = document.createElement("h1");
   winnerMessage.setAttribute("justifyContent", "center");
-  winnerMessage.textContent =
-    "Congrats player '" + currentPlayer.textContent + "' you've won the game";
+  winnerMessage.textContent = gameOverMsg;
+ 
 
   message.appendChild(winnerMessage);
-  msg="Click here for a new Game";
-  gameMessage(msg);
+  newGameMsg = "Click here for a new Game";
+  console.log(`new game message is ${newGameMsg}`);
+  gameMessage(newGameMsg);
   gameMessageUpdateBackGround();
 }
 
-function gameMessageUpdateBackGround(){
-    gamePlayMsg.style.backgroundColor ="green";
-   
+function gameMessageUpdateBackGround() {
+  gamePlayMsg.style.backgroundColor = "green";
 }
 
 function gameMessage(msg) {
-    console.log(`message is ${msg}`)
+  console.log(`game message is ${msg}`);
   gamePlayMsg.textContent = msg;
 }
 
@@ -80,12 +80,18 @@ function isWinner(currentPlayer) {
   //iterate though the squares node collection - for each value that matches current player collect the index
   //check the array for winning combos (if winning combo exist in the gameplay array = winner)
   const squares = document.querySelectorAll(".square");
-
+  let winMsg = "";
   gamePlay = [];
   for (let i = 0; i < squares.length; i++) {
     if (squares[i].innerText === currentPlayer.textContent) {
       gamePlay.push(i);
     }
+  }
+
+  if (gamePlay.length === 5 && currentPlayer.id === "set-x") {
+    //the game is a tie
+    let tieMsg = "The game is a tie"
+    gameOver(currentPlayer, tieMsg)
   }
   //check to see if the winningCombos are in gamePlay
   winIndex = 0;
@@ -101,8 +107,8 @@ function isWinner(currentPlayer) {
     }
     if (winIndex === 3) {
       console.log(`winIndex count is  ${winIndex}`);
-      console.log(`Player ${currentPlayer.textContent} is the Winner!!!`);
-      recognizeWinner(currentPlayer);
+      winMsg = `Player ${currentPlayer.textContent} is the Winner!!!`;
+      gameOver(currentPlayer, winMsg);
       break;
     } else {
       winIndex = 0;
@@ -111,6 +117,7 @@ function isWinner(currentPlayer) {
 }
 
 function changeBoxValue(e) {
+  let playerTurnMsg = "";
   if (playerX.style.backgroundColor === "green") {
     currentPlayer = playerX;
   } else if (playerX.style.backgroundColor === "grey") {
@@ -119,15 +126,18 @@ function changeBoxValue(e) {
 
   // console.log(`change box current player is ${currentPlayer.id}`);
   if (currentPlayer.id === "set-x") {
-    msg = "X played a turn - O's turn";
+    playerTurnMsg = "X played a turn - O's turn";
     e.target.textContent = "X";
   } else if (currentPlayer.id === "set-o") {
-    msg = "O played a turn - X's turn";
+    playerTurnMsg = "O played a turn - X's turn";
     e.target.textContent = "O";
   }
-  isWinner(currentPlayer);
+  
   changePlayer(currentPlayer);
-  gameMessage(msg);
+  
+  gameMessage(playerTurnMsg);
+
+  isWinner(currentPlayer);
 }
 gameBox.addEventListener("click", (e) => {
   //only allow new click if is square and is '?'
@@ -140,24 +150,26 @@ gameBox.addEventListener("click", (e) => {
   }
 });
 
-gamePlayMsg.addEventListener('click', (e)=>{
-    console.log(`new game ${e.target.textContent}`)
-    if(e.target.textContent==="Click here for a new Game"){
+gamePlayMsg.addEventListener("click", (e) => {
+  console.log(`new game ${e.target.textContent}`);
+  if (e.target.textContent === "Click here for a new Game") {
+    newGame();
+  }
+});
 
-        col1.style.backgroundColor = "white";
-        col2.style.backgroundColor = "white";
-        col3.style.backgroundColor = "white";
-        squares.forEach(element => {
-            element.textContent='?'
-        });
-        playerO.style.backgroundColor="grey"
-        gamePlayMsg.style.backgroundColor="white"
-        gamePlayMsg.textContent="X turn ready!"
-        init();
-    }
-    
-})
-
+function newGame() {
+  col1.style.backgroundColor = "white";
+  col2.style.backgroundColor = "white";
+  col3.style.backgroundColor = "white";
+  squares.forEach((element) => {
+    element.textContent = "?";
+  });
+  playerO.style.backgroundColor = "grey";
+  gamePlayMsg.style.backgroundColor = "white";
+  gamePlayMsg.textContent = "X turn ready!";
+  winnerMessage.textContent ="";
+  init();
+}
 
 //place code here to run at load of page
 function init() {
