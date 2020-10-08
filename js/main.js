@@ -52,6 +52,8 @@ function recognizeWinner(currentPlayer) {
   col1.style.backgroundColor = "grey";
   col2.style.backgroundColor = "grey";
   col3.style.backgroundColor = "grey";
+  playerX.style.backgroundColor="grey";
+  playerO.style.backgroundColor="grey";
   winnerMessage = document.createElement("h1");
   winnerMessage.setAttribute("justifyContent", "center");
   winnerMessage.textContent =
@@ -60,7 +62,14 @@ function recognizeWinner(currentPlayer) {
   message.appendChild(winnerMessage);
   msg="Click here for a new Game";
   gameMessage(msg);
+  gameMessageUpdateBackGround();
 }
+
+function gameMessageUpdateBackGround(){
+    gamePlayMsg.style.backgroundColor ="green";
+   
+}
+
 function gameMessage(msg) {
     console.log(`message is ${msg}`)
   gamePlayMsg.textContent = msg;
@@ -130,6 +139,25 @@ gameBox.addEventListener("click", (e) => {
     changeBoxValue(e);
   }
 });
+
+gamePlayMsg.addEventListener('click', (e)=>{
+    console.log(`new game ${e.target.textContent}`)
+    if(e.target.textContent==="Click here for a new Game"){
+
+        col1.style.backgroundColor = "white";
+        col2.style.backgroundColor = "white";
+        col3.style.backgroundColor = "white";
+        squares.forEach(element => {
+            element.textContent='?'
+        });
+        playerO.style.backgroundColor="grey"
+        gamePlayMsg.style.backgroundColor="white"
+        gamePlayMsg.textContent="X turn ready!"
+        init();
+    }
+    
+})
+
 
 //place code here to run at load of page
 function init() {
