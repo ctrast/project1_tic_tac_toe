@@ -1,3 +1,6 @@
+//Use strict to ensure clean code with variables
+("use strict");
+
 //to determine winner
 //ROW winner: if index (0, 1, or 2) across columns(1,2,3) is same letter col1 0=x, col2 0=x, col3 0=x
 //COLUMN winner: if index (0, 1, or 2) in SAME column(1,1,1) is same letter col1 0=x, col1 1=x, col1 2=x
@@ -20,8 +23,6 @@ winningCombo = [
   [3, 4, 5],
   [6, 7, 8],
 ];
-//Use strict to ensure clean code with variables
-("use scrict");
 
 const playerO = document.querySelector("#set-o");
 const playerX = document.querySelector("#set-x");
@@ -73,7 +74,6 @@ function gameOver(currentPlayer, gameOverMsg) {
   message.appendChild(winnerMessage);
 
   newGameMsg = "Click here for a new Game";
-  // console.log(`new game message is ${newGameMsg}`);
 
   gameMessage(newGameMsg);
   gameMessageUpdateBackGround();
@@ -206,6 +206,8 @@ function newGame() {
   gamePlayMsg.style.backgroundColor = "white";
   gamePlayMsg.textContent = "X turn ready!";
   winnerMessage.textContent = "";
+  playWopr.disabled = false;
+  playWopr.checked = false;
   init();
 }
 
@@ -226,30 +228,32 @@ init();
 function woprTurn(blockWinCombo) {
   //the opponent has two of three in a winning combo - get the combo not picked
   console.log(`wopr move is index ${blockWinCombo}`);
+  if (gamePlayMsg.style.backgroundColor !== "green") {
+    squares[blockWinCombo].textContent = "O";
+    currentPlayer = playerO;
+    playerTurnMsg = "WOPR played a turn - X's turn";
 
-  squares[blockWinCombo].textContent = "O";
-  currentPlayer = playerO;
-  playerTurnMsg = "WOPR played a turn - X's turn";
+    changePlayer(currentPlayer);
 
-  changePlayer(currentPlayer);
+    console.log(
+      `IN wopr after current player , player turn msg ${playerTurnMsg}`
+    );
 
-  console.log(
-    `IN wopr after current player , player turn msg ${playerTurnMsg}`
-  );
+    gameMessage(playerTurnMsg);
 
-  gameMessage(playerTurnMsg);
-
-  //isWinner(currentPlayer);
+    isWinner(currentPlayer);
+  }
 }
-
+woprBlockMoves = [];
 function wopr() {
   //get squares of opponent - use this list against array of winning combos
   // - if opponent has two of three indexs in a winning combo wopr clicks on the available index
-
+  let woprPlayed = false;
   const squares = document.querySelectorAll(".square");
   opponentPlay = [];
   openSquaresToPlay = [];
-  let blockWinCombo = null;
+
+  let blockWinMove = null;
 
   //what squares are open for play
   for (let i = 0; i < squares.length; i++) {
@@ -261,39 +265,53 @@ function wopr() {
   //what squares are used by opponent
   for (let i = 0; i < squares.length; i++) {
     if (squares[i].innerText === "X") {
+      console.log(`squares innertext for ${i} is ${squares[i].innerText}`);
       opponentPlay.push(i);
     }
   }
 
   //check to see if the opponentPlay has winningCombos
-  console.log(` opponent play ${opponentPlay}`);
-  let curIndex = 0;
 
-  for (let i = 0; i < winningCombo.length; i++) {
+  let curIndex = 0;
+  loop1: for (let i = 0; i < winningCombo.length; i++) {
     winCombo = String(winningCombo[i]).split(",");
+    curIndex = 0;
+    blockWinMove=null;
+    console.log(`evaluating for ${winCombo}...`);
+    console.log(`opponent play is ${opponentPlay}...`);
     for (let j = 0; j < winCombo.length; j++) {
-      if (opponentPlay.includes(parseInt(winCombo[j]))) {
-        console.log(` adding 1 to curindex ${curIndex}`);
-        curIndex = curIndex + 1;
-      } else {
-        blockWinCombo = winCombo[j];
+      //0,3,6
+      if (opponentPlay.includes(parseInt(winCombo[j])) && !woprBlockMoves.includes(parseInt(winCombo[j]))) {
+        console.log(`*****opponent play included in winning combo ${parseInt(winCombo[j])}`);
+          curIndex = curIndex + 1;
+          console.log(`*****curIndex ${curIndex}`);
+      } else if (!woprBlockMoves.includes(parseInt(winCombo[j]))) {
+        console.log(`******adding a combo not played ${winCombo[j]}`);
+        blockWinMove = parseInt(winCombo[j]);
       }
     }
-    // is the opponent close to a three win combo?
     if (curIndex === 2) {
-        console.log(`here in the process block win index is ${blockWinCombo}`);
-        woprTurn(blockWinCombo);
-        break;
-      } else {
-        curIndex = 0;
-        blockWinCombo = "";
-      }
+      //the eval of three indicates that there are two indexes in a group of three selected.
+      console.log(`******block win move ${blockWinMove}`);
+      
+      break;
+    }
   }
-  //the opponent is not having two plays towards a winning combo - just click the first available square
-  if( curIndex !== 2){
+
+  // is the opponent close to a three win combo?
+  console.log(`********blockWinCombo play the turn at index ${blockWinMove}`);
+
+  if (blockWinMove !== null) {
+    //console.log(`the index to block the win is ${blockWinMove}`);
+   woprBlockMoves.push(blockWinMove);
+    console.log(`blocked moves are ${woprBlockMoves}`);
+    woprTurn(blockWinMove);
+    woprPlayed = true;
+    //break;
+  } else {
+    curIndex = 0;
+    blockWinMove = "";
+    woprBlockMoves.push(openSquaresToPlay[0]);
     woprTurn(openSquaresToPlay[0]);
   }
-  console.log(openSquaresToPlay);
-  console.log(`at end of WOPR function`);
- 
 }
