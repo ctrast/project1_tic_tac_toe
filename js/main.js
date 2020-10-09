@@ -32,23 +32,34 @@ const col3 = document.querySelector("#col3");
 const squares = document.querySelectorAll(".square");
 const message = document.querySelector(".message");
 const gamePlayMsg = document.querySelector(".buttons h3");
+const playWopr = document.querySelector("input");
 
 const changePlayer = (currentPlayer) => {
   console.log(`cur player before change is  ${currentPlayer.id}`);
   if (currentPlayer.id === "set-x") {
-    playerO.style.backgroundColor = "green";
-    currentPlayer.style.backgroundColor = "grey";
-    currentPlayer = playerO;
+    //if wopr is checked...
+    if (playWopr.checked === true) {
+      playWopr.disabled = true;
+      currentPlayer = playerO;
+      playerO.style.backgroundColor = "green";
+      currentPlayer.style.backgroundColor = "grey";
+      //let WOPR make a move
+      wopr();
+    } else {
+      playerO.style.backgroundColor = "green";
+      currentPlayer.style.backgroundColor = "grey";
+      currentPlayer = playerO;
+    }
   } else {
     playerX.style.backgroundColor = "green";
     currentPlayer.style.backgroundColor = "grey";
     currentPlayer = playerX;
   }
-  console.log(`cur player is NOW ${currentPlayer.id}`);
+  console.log(`cur player AFTER change is  ${currentPlayer.id}`);
 };
 
 function gameOver(currentPlayer, gameOverMsg) {
-  console.log(`game over message is ${gameOverMsg}`);
+  //console.log(`game over message is ${gameOverMsg}`);
 
   squares.forEach((element) => {
     element.style.backgroundColor = "grey";
@@ -62,7 +73,7 @@ function gameOver(currentPlayer, gameOverMsg) {
   message.appendChild(winnerMessage);
 
   newGameMsg = "Click here for a new Game";
-  console.log(`new game message is ${newGameMsg}`);
+  // console.log(`new game message is ${newGameMsg}`);
 
   gameMessage(newGameMsg);
   gameMessageUpdateBackGround();
@@ -73,7 +84,7 @@ function gameMessageUpdateBackGround() {
 }
 
 function gameMessage(msg) {
-  console.log(`game message is ${msg}`);
+  console.log(`in gameMessage game message is ${msg}`);
   gamePlayMsg.textContent = msg;
 }
 
@@ -94,17 +105,17 @@ function isWinner(currentPlayer) {
   //check to see if the winningCombos are in gamePlay
   winIndex = 0;
   for (let i = 0; i < winningCombo.length; i++) {
-    console.log(`winningCombo 1 is ${winningCombo[i]}`);
+    //console.log(`winningCombo 1 is ${winningCombo[i]}`);
     winCombo = String(winningCombo[i]).split(",");
 
     for (let wc = 0; wc < winCombo.length; wc++) {
       if (gamePlay.includes(parseInt(winCombo[wc]))) {
-        console.log(`game play includes ${parseInt(winCombo[wc])}`);
+        //console.log(`game play includes ${parseInt(winCombo[wc])}`);
         winIndex = winIndex + 1;
       }
     }
     if (winIndex === 3) {
-      console.log(`winIndex count is  ${winIndex}`);
+      //console.log(`winIndex count is  ${winIndex}`);
       winMsg = `Player ${currentPlayer.textContent} is the Winner!!!`;
       gameOver(currentPlayer, winMsg);
       break;
@@ -125,13 +136,13 @@ function isWinner(currentPlayer) {
 
 function changeBoxValue(e) {
   let playerTurnMsg = "";
+  //get the current player
   if (playerX.style.backgroundColor === "green") {
     currentPlayer = playerX;
   } else if (playerX.style.backgroundColor === "grey") {
     currentPlayer = playerO;
   }
 
-  // console.log(`change box current player is ${currentPlayer.id}`);
   if (currentPlayer.id === "set-x") {
     playerTurnMsg = "X played a turn - O's turn";
     e.target.textContent = "X";
@@ -140,11 +151,9 @@ function changeBoxValue(e) {
     e.target.textContent = "O";
   }
 
-  changePlayer(currentPlayer);
-
   gameMessage(playerTurnMsg);
-
   isWinner(currentPlayer);
+  changePlayer(currentPlayer);
 }
 gameBox.addEventListener("click", (e) => {
   //only allow new click if is square and is '?'
@@ -161,7 +170,6 @@ gameBox.addEventListener("click", (e) => {
 //add mouse over to help identify the squares
 gameBox.addEventListener("mouseover", (e) => {
   //only allow if is square is '?'
-  console.log(`mouse enter ${e.target}`);
   if (
     e.target.classList.contains("square") &&
     e.target.textContent === "?" &&
@@ -173,8 +181,6 @@ gameBox.addEventListener("mouseover", (e) => {
 
 //add mouse out to change color back to white
 gameBox.addEventListener("mouseout", (e) => {
-  //only allow if is square is '?'
-  console.log(`mouse leave ${e.target}`);
   if (
     e.target.classList.contains("square") &&
     e.target.textContent === "?" &&
@@ -185,7 +191,7 @@ gameBox.addEventListener("mouseout", (e) => {
 });
 
 gamePlayMsg.addEventListener("click", (e) => {
-  console.log(`new game ${e.target.textContent}`);
+  //console.log(`new game ${e.target.textContent}`);
   if (e.target.textContent === "Click here for a new Game") {
     newGame();
   }
@@ -210,3 +216,84 @@ function init() {
 }
 
 init();
+
+//AI component -
+//when PC turn - get available indexs from squares and then use the first available index then set that square to the O play
+// the goal of the AI component would be to first interupt a three index winning match of opponent ( X )
+// after getting available indexs, see if any of the availble indexes lie within a winning three index combo
+//click on the index that lies within the available index and where that index is within a winning index
+
+function woprTurn(blockWinCombo) {
+  //the opponent has two of three in a winning combo - get the combo not picked
+  console.log(`wopr move is index ${blockWinCombo}`);
+
+  squares[blockWinCombo].textContent = "O";
+  currentPlayer = playerO;
+  playerTurnMsg = "WOPR played a turn - X's turn";
+
+  changePlayer(currentPlayer);
+
+  console.log(
+    `IN wopr after current player , player turn msg ${playerTurnMsg}`
+  );
+
+  gameMessage(playerTurnMsg);
+
+  //isWinner(currentPlayer);
+}
+
+function wopr() {
+  //get squares of opponent - use this list against array of winning combos
+  // - if opponent has two of three indexs in a winning combo wopr clicks on the available index
+
+  const squares = document.querySelectorAll(".square");
+  opponentPlay = [];
+  openSquaresToPlay = [];
+  let blockWinCombo = null;
+
+  //what squares are open for play
+  for (let i = 0; i < squares.length; i++) {
+    if (squares[i].innerText === "?") {
+      openSquaresToPlay.push(i);
+    }
+  }
+
+  //what squares are used by opponent
+  for (let i = 0; i < squares.length; i++) {
+    if (squares[i].innerText === "X") {
+      opponentPlay.push(i);
+    }
+  }
+
+  //check to see if the opponentPlay has winningCombos
+  console.log(` opponent play ${opponentPlay}`);
+  let curIndex = 0;
+
+  for (let i = 0; i < winningCombo.length; i++) {
+    winCombo = String(winningCombo[i]).split(",");
+    for (let j = 0; j < winCombo.length; j++) {
+      if (opponentPlay.includes(parseInt(winCombo[j]))) {
+        console.log(` adding 1 to curindex ${curIndex}`);
+        curIndex = curIndex + 1;
+      } else {
+        blockWinCombo = winCombo[j];
+      }
+    }
+    // is the opponent close to a three win combo?
+    if (curIndex === 2) {
+        console.log(`here in the process block win index is ${blockWinCombo}`);
+        woprTurn(blockWinCombo);
+        break;
+      } else {
+        curIndex = 0;
+        blockWinCombo = "";
+      }
+  }
+  //the opponent is not having two plays towards a winning combo - just click the first available square
+  if( curIndex !== 2){
+    woprTurn(openSquaresToPlay[0]);
+  }
+  console.log(openSquaresToPlay);
+  console.log(`at end of WOPR function`);
+ 
+}
