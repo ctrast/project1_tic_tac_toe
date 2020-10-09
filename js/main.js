@@ -60,8 +60,7 @@ const changePlayer = (currentPlayer) => {
 };
 
 function gameOver(currentPlayer, gameOverMsg) {
-  //console.log(`game over message is ${gameOverMsg}`);
-
+  
   squares.forEach((element) => {
     element.style.backgroundColor = "grey";
   });
@@ -173,7 +172,7 @@ gameBox.addEventListener("mouseover", (e) => {
   if (
     e.target.classList.contains("square") &&
     e.target.textContent === "?" &&
-    col1.style.backgroundColor !== "grey"
+    squares[0].style.backgroundColor !== "grey" 
   ) {
     e.target.style.backgroundColor = "green";
   }
@@ -181,11 +180,7 @@ gameBox.addEventListener("mouseover", (e) => {
 
 //add mouse out to change color back to white
 gameBox.addEventListener("mouseout", (e) => {
-  if (
-    e.target.classList.contains("square") &&
-    e.target.textContent === "?" &&
-    col1.style.backgroundColor !== "grey"
-  ) {
+  if (e.target.classList.contains("square") && e.target.textContent === "?" && squares[0].style.backgroundColor !== "grey"){
     e.target.style.backgroundColor = "white";
   }
 });
@@ -193,6 +188,7 @@ gameBox.addEventListener("mouseout", (e) => {
 gamePlayMsg.addEventListener("click", (e) => {
   //console.log(`new game ${e.target.textContent}`);
   if (e.target.textContent === "Click here for a new Game") {
+    
     newGame();
   }
 });
@@ -215,6 +211,7 @@ function newGame() {
 function init() {
   //disable Player "O" button and change X to green as X goes first
   playerX.style.backgroundColor = "green";
+  
 }
 
 init();
