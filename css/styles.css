@@ -45,3 +45,12 @@ p {
   width: 150px;
   outline: solid black 1px;
 }
+@media (max-width: 850px) {
+    .square{
+        height: 125px;
+        width: 125px;
+    }
+    .div-butt{
+        margin-top: 20px;
+    }
+}
