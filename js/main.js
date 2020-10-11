@@ -7,11 +7,11 @@
 //DIAG winner: if index (0,1 and 2) accross columns(1,2,3) is same letter col1 0=x, col2 1=x, col3 2=x
 //DIAG winner: if index (2,1 and 0) accross columns(1,2,3) is same letter col3 2=x, col2 1=x, col1 0=x
 
-//After player takes turns:
-//1. check each of the four possible winning combos
-//2. disable the curent player button and enable the other player button
-//3. change the default value of a click to the current button value
+/*
 
+Create array of winning combos - these are used to determine a winner. 
+If player has three indexs selected ( 0,4,8) then player is a winner 
+*/
 console.log("main is connected");
 winningCombo = [
   [0, 3, 6],
@@ -35,6 +35,10 @@ const message = document.querySelector(".message");
 const gamePlayMsg = document.querySelector(".buttons h3");
 const playWopr = document.querySelector("input");
 
+//After player takes turns:
+//1. check each of the eight possible winning combos
+//2. disable the curent player button and enable the other player button
+//3. change the default value of a click to the current button value
 const changePlayer = (currentPlayer) => {
   console.log(`cur player before change is  ${currentPlayer.id}`);
   if (currentPlayer.id === "set-x") {
@@ -60,7 +64,6 @@ const changePlayer = (currentPlayer) => {
 };
 
 function gameOver(currentPlayer, gameOverMsg) {
-  
   squares.forEach((element) => {
     element.style.backgroundColor = "grey";
   });
@@ -87,10 +90,13 @@ function gameMessage(msg) {
   gamePlayMsg.textContent = msg;
 }
 
+/*
+select the squares for entries for the currentPlayer -
+iterate though the squares node collection - for each value that matches current player collect the index
+check the array of winning combos and sub array of split combo 0,1,2 ect
+if player has three of the indexes in winning combo = winner
+*/
 function isWinner(currentPlayer) {
-  //select the squares for entries for the currentPlayer -
-  //iterate though the squares node collection - for each value that matches current player collect the index
-  //check the array for winning combos (if winning combo exist in the gameplay array = winner)
   const squares = document.querySelectorAll(".square");
   let winMsg = "";
   let tieMsg = "";
@@ -166,21 +172,25 @@ gameBox.addEventListener("click", (e) => {
   }
 });
 
-//add mouse over to help identify the squares
+//add mouse over to help identify the squares being hovered
 gameBox.addEventListener("mouseover", (e) => {
   //only allow if is square is '?'
   if (
     e.target.classList.contains("square") &&
     e.target.textContent === "?" &&
-    squares[0].style.backgroundColor !== "grey" 
+    squares[0].style.backgroundColor !== "grey"
   ) {
     e.target.style.backgroundColor = "green";
   }
 });
 
-//add mouse out to change color back to white
+//add mouse out to change hover color back to white
 gameBox.addEventListener("mouseout", (e) => {
-  if (e.target.classList.contains("square") && e.target.textContent === "?" && squares[0].style.backgroundColor !== "grey"){
+  if (
+    e.target.classList.contains("square") &&
+    e.target.textContent === "?" &&
+    squares[0].style.backgroundColor !== "grey"
+  ) {
     e.target.style.backgroundColor = "white";
   }
 });
@@ -188,7 +198,6 @@ gameBox.addEventListener("mouseout", (e) => {
 gamePlayMsg.addEventListener("click", (e) => {
   //console.log(`new game ${e.target.textContent}`);
   if (e.target.textContent === "Click here for a new Game") {
-    
     newGame();
   }
 });
@@ -211,7 +220,6 @@ function newGame() {
 function init() {
   //disable Player "O" button and change X to green as X goes first
   playerX.style.backgroundColor = "green";
-  
 }
 
 init();
@@ -241,7 +249,14 @@ function woprTurn(blockWinCombo) {
     isWinner(currentPlayer);
   }
 }
+
+/*
+ wopr play - if player select get an array of opponent plays, check each for possibl winning combo
+ if opponent play has two of three winning combos - click the third winning combo to block
+
+*/
 woprBlockMoves = [];
+
 function wopr() {
   //get squares of opponent - use this list against array of winning combos
   // - if opponent has two of three indexs in a winning combo wopr clicks on the available index
@@ -268,39 +283,43 @@ function wopr() {
   }
 
   //check to see if the opponentPlay has winningCombos
-
   let curIndex = 0;
   loop1: for (let i = 0; i < winningCombo.length; i++) {
     winCombo = String(winningCombo[i]).split(",");
     curIndex = 0;
-    blockWinMove=null;
+    blockWinMove = null;
     console.log(`evaluating for ${winCombo}...`);
     console.log(`opponent play is ${opponentPlay}...`);
     for (let j = 0; j < winCombo.length; j++) {
       //0,3,6
-      if (opponentPlay.includes(parseInt(winCombo[j])) && !woprBlockMoves.includes(parseInt(winCombo[j]))) {
-        console.log(`*****opponent play included in winning combo ${parseInt(winCombo[j])}`);
-          curIndex = curIndex + 1;
-          console.log(`*****curIndex ${curIndex}`);
+      if (
+        opponentPlay.includes(parseInt(winCombo[j])) &&
+        !woprBlockMoves.includes(parseInt(winCombo[j]))
+      ) {
+        console.log(
+          `*****opponent play included in winning combo ${parseInt(
+            winCombo[j]
+          )}`
+        );
+        curIndex = curIndex + 1;
+        console.log(`*****curIndex ${curIndex}`);
       } else if (!woprBlockMoves.includes(parseInt(winCombo[j]))) {
         console.log(`******adding a combo not played ${winCombo[j]}`);
         blockWinMove = parseInt(winCombo[j]);
       }
     }
     if (curIndex === 2) {
-      //the eval of three indicates that there are two indexes in a group of three selected.
+      //the eval of three indicates opponent has two of three indexes of a winning combo - click the third index.
       console.log(`******block win move ${blockWinMove}`);
-      
       break;
     }
   }
 
   // is the opponent close to a three win combo?
   console.log(`********blockWinCombo play the turn at index ${blockWinMove}`);
-
   if (blockWinMove !== null) {
     //console.log(`the index to block the win is ${blockWinMove}`);
-   woprBlockMoves.push(blockWinMove);
+    woprBlockMoves.push(blockWinMove);
     console.log(`blocked moves are ${woprBlockMoves}`);
     woprTurn(blockWinMove);
     woprPlayed = true;
