@@ -134,7 +134,13 @@ function isWinner(currentPlayer) {
     gamePlayMsg.style.backgroundColor !== "green"
   ) {
     //the game is a tie
-    let tieMsg = "The game is a tie";
+    if (playWopr.checked === true) {
+        tieMsg = "The game is a tie - the only way to win is not to play";
+    }else{
+        tieMsg = "The game is a tie";
+        
+    }
+    
     gameOver(currentPlayer, tieMsg);
   }
 }
