@@ -46,9 +46,13 @@ p {
   outline: solid black 1px;
 }
 @media (max-width: 850px) {
+    h3{
+        margin-top: 0px;
+        margin-bottom: auto;
+    }
     .square{
-        height: 125px;
-        width: 125px;
+        height: 100px;
+        width: 100px;
     }
     .div-butt{
         margin-top: 20px;
