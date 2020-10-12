@@ -220,6 +220,7 @@ function newGame() {
 function init() {
   //disable Player "O" button and change X to green as X goes first
   playerX.style.backgroundColor = "green";
+  woprBlockMoves=[];
 }
 
 init();
@@ -291,15 +292,9 @@ function wopr() {
     console.log(`evaluating for ${winCombo}...`);
     console.log(`opponent play is ${opponentPlay}...`);
     for (let j = 0; j < winCombo.length; j++) {
-      //0,3,6
-      if (
-        opponentPlay.includes(parseInt(winCombo[j])) &&
-        !woprBlockMoves.includes(parseInt(winCombo[j]))
-      ) {
-        console.log(
-          `*****opponent play included in winning combo ${parseInt(
-            winCombo[j]
-          )}`
+      //3,4,5
+      if (opponentPlay.includes(parseInt(winCombo[j])) && !woprBlockMoves.includes(parseInt(winCombo[j]))) {
+        console.log(`*****opponent play included in winning combo ${parseInt(winCombo[j])}`
         );
         curIndex = curIndex + 1;
         console.log(`*****curIndex ${curIndex}`);
@@ -308,7 +303,7 @@ function wopr() {
         blockWinMove = parseInt(winCombo[j]);
       }
     }
-    if (curIndex === 2) {
+    if (curIndex === 2 && blockWinMove!== null) {
       //the eval of three indicates opponent has two of three indexes of a winning combo - click the third index.
       console.log(`******block win move ${blockWinMove}`);
       break;
