@@ -6,7 +6,7 @@ List unsolved problems which would be fixed in future iterations.
 Describe how you solved for the winner
 Describe how some of your favorite functions work
 
-#TIC TAC TOE
+# **TIC TAC TOE**
 A game of Tic Tac Toe. The objective of the game is to get three X's or O's in a column , row or diagnoal.
 
 ##To USE:
