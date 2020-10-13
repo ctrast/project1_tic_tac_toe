@@ -76,7 +76,7 @@ const changePlayer = (currentPlayer) => {
 
 function gameOver(currentPlayer, gameOverMsg) {
   //create the stats for game play - scope of current player is winner
-  if (gameOverMsg === "The game is a tie") {
+  if (gameOverMsg === "The game is a tie"|| gameOverMsg==="The game is a tie - the only way to win is not to play") {
     playerOStatsObj.t = playerOStatsObj.t + 1;
     playerXStatsObj.t = playerXStatsObj.t + 1;
     
@@ -94,7 +94,7 @@ function gameOver(currentPlayer, gameOverMsg) {
       playerOStatsObj.w + "/" + playerOStatsObj.l + "/" + playerOStatsObj.t;
     playerXStats.textContent =
       playerXStatsObj.w + "/" + playerXStatsObj.l + "/" + playerOStatsObj.t;
-      
+
   squares.forEach((element) => {
     element.style.backgroundColor = "grey";
   });
