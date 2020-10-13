@@ -74,6 +74,9 @@ const changePlayer = (currentPlayer) => {
   console.log(`cur player AFTER change is  ${currentPlayer.id}`);
 };
 
+/*
+    Game over set the UI to indicate the game is completed
+*/
 function gameOver(currentPlayer, gameOverMsg) {
   //create the stats for game play - scope of current player is winner
   if (gameOverMsg === "The game is a tie"|| gameOverMsg==="The game is a tie - the only way to win is not to play") {
@@ -111,6 +114,7 @@ function gameOver(currentPlayer, gameOverMsg) {
   gameMessage(newGameMsg);
   gameMessageUpdateBackGround();
 }
+
 
 function gameMessageUpdateBackGround() {
   gamePlayMsg.style.backgroundColor = "green";
@@ -175,6 +179,9 @@ function isWinner(currentPlayer) {
   }
 }
 
+/*
+    Update the UI with a players selction.
+*/
 function changeBoxValue(e) {
   let playerTurnMsg = "";
   //get the current player
@@ -196,6 +203,7 @@ function changeBoxValue(e) {
   isWinner(currentPlayer);
   changePlayer(currentPlayer);
 }
+
 gameBox.addEventListener("click", (e) => {
   //only allow new click if is square and is '?'
   if (
@@ -292,12 +300,11 @@ function woprTurn(blockWinCombo) {
 }
 
 /*
- wopr play - if player select get an array of opponent plays, check each for possibl winning combo
- if opponent play has two of three winning combos - click the third winning combo to block
+ wopr play - if player select play WOPR get an array of opponent plays, check each for possible winning combo
+ if opponent play has two of three winning combos - click the third winning combo to block.
 
 */
 woprBlockMoves = [];
-
 function wopr() {
   //get squares of opponent - use this list against array of winning combos
   // - if opponent has two of three indexs in a winning combo wopr clicks on the available index
