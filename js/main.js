@@ -171,7 +171,7 @@ gameBox.addEventListener("click", (e) => {
   if (
     e.target.classList.contains("square") &&
     e.target.textContent === "?" &&
-    col1.style.backgroundColor !== "grey"
+    squares[0].style.backgroundColor !== "grey"
   ) {
     e.target.style.backgroundColor = "white";
     //disable AI player if not selected
