@@ -23,7 +23,16 @@ winningCombo = [
   [3, 4, 5],
   [6, 7, 8],
 ];
-
+playerXStatsObj = {
+  w: 0,
+  l: 0,
+  t: 0,
+};
+playerOStatsObj = {
+  w: 0,
+  l: 0,
+  t: 0,
+};
 const playerO = document.querySelector("#set-o");
 const playerX = document.querySelector("#set-x");
 const gameBox = document.querySelector("#gameBox");
@@ -34,6 +43,8 @@ const squares = document.querySelectorAll(".square");
 const message = document.querySelector(".message");
 const gamePlayMsg = document.querySelector(".buttons h3");
 const playWopr = document.querySelector("input");
+const playerXStats = document.querySelector("#wlt-x");
+const playerOStats = document.querySelector("#wlt-o");
 
 //After player takes turns:
 //1. check each of the eight possible winning combos
@@ -64,6 +75,26 @@ const changePlayer = (currentPlayer) => {
 };
 
 function gameOver(currentPlayer, gameOverMsg) {
+  //create the stats for game play - scope of current player is winner
+  if (gameOverMsg === "The game is a tie") {
+    playerOStatsObj.t = playerOStatsObj.t + 1;
+    playerXStatsObj.t = playerXStatsObj.t + 1;
+    
+  } else if (currentPlayer.id === "set-x") {
+      //player X is winner increment player x win and player o loss
+      playerXStatsObj.w = playerXStatsObj.w + 1;
+      playerOStatsObj.l =playerOStatsObj.l+1;
+  } else if (currentPlayer.id === 'set-o'){
+       //player O is winner increment player O win and player X loss
+       playerOStatsObj.w = playerOStatsObj.w + 1;
+       playerXStatsObj.l =playerXStatsObj.l+1;
+  }
+//change the UI with current scores:
+  playerOStats.textContent =
+      playerOStatsObj.w + "/" + playerOStatsObj.l + "/" + playerOStatsObj.t;
+    playerXStats.textContent =
+      playerXStatsObj.w + "/" + playerXStatsObj.l + "/" + playerOStatsObj.t;
+      
   squares.forEach((element) => {
     element.style.backgroundColor = "grey";
   });
@@ -135,12 +166,11 @@ function isWinner(currentPlayer) {
   ) {
     //the game is a tie
     if (playWopr.checked === true) {
-        tieMsg = "The game is a tie - the only way to win is not to play";
-    }else{
-        tieMsg = "The game is a tie";
-        
+      tieMsg = "The game is a tie - the only way to win is not to play";
+    } else {
+      tieMsg = "The game is a tie";
     }
-    
+
     gameOver(currentPlayer, tieMsg);
   }
 }
@@ -175,8 +205,8 @@ gameBox.addEventListener("click", (e) => {
   ) {
     e.target.style.backgroundColor = "white";
     //disable AI player if not selected
-    if(playWopr.checked===false){
-        playWopr.disabled=true;
+    if (playWopr.checked === false) {
+      playWopr.disabled = true;
     }
     changeBoxValue(e);
   }
@@ -230,7 +260,7 @@ function newGame() {
 function init() {
   //disable Player "O" button and change X to green as X goes first
   playerX.style.backgroundColor = "green";
-  woprBlockMoves=[];
+  woprBlockMoves = [];
 }
 
 init();
@@ -303,8 +333,14 @@ function wopr() {
     console.log(`opponent play is ${opponentPlay}...`);
     for (let j = 0; j < winCombo.length; j++) {
       //3,4,5
-      if (opponentPlay.includes(parseInt(winCombo[j])) && !woprBlockMoves.includes(parseInt(winCombo[j]))) {
-        console.log(`*****opponent play included in winning combo ${parseInt(winCombo[j])}`
+      if (
+        opponentPlay.includes(parseInt(winCombo[j])) &&
+        !woprBlockMoves.includes(parseInt(winCombo[j]))
+      ) {
+        console.log(
+          `*****opponent play included in winning combo ${parseInt(
+            winCombo[j]
+          )}`
         );
         curIndex = curIndex + 1;
         console.log(`*****curIndex ${curIndex}`);
@@ -313,7 +349,7 @@ function wopr() {
         blockWinMove = parseInt(winCombo[j]);
       }
     }
-    if (curIndex === 2 && blockWinMove!== null) {
+    if (curIndex === 2 && blockWinMove !== null) {
       //the eval of three indicates opponent has two of three indexes of a winning combo - click the third index.
       console.log(`******block win move ${blockWinMove}`);
       break;

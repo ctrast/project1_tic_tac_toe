@@ -35,7 +35,11 @@ p {
   justify-content: center;
   text-align: center;
 }
-
+.wlt-x .wlt-o{
+    border: solid black;
+    margin-top: 0px;
+    margin-left: 10px;
+}
 .square {
   font-size: 90px;
   align-items: center;
