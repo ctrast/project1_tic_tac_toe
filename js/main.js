@@ -174,6 +174,10 @@ gameBox.addEventListener("click", (e) => {
     col1.style.backgroundColor !== "grey"
   ) {
     e.target.style.backgroundColor = "white";
+    //disable AI player if not selected
+    if(playWopr.checked===false){
+        playWopr.disabled=true;
+    }
     changeBoxValue(e);
   }
 });
