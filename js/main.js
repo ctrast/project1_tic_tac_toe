@@ -23,6 +23,7 @@ winningCombo = [
   [3, 4, 5],
   [6, 7, 8],
 ];
+
 playerXStatsObj = {
   w: 0,
   l: 0,
@@ -205,7 +206,7 @@ function changeBoxValue(e) {
 }
 
 gameBox.addEventListener("click", (e) => {
-  //only allow new click if is square and is '?'
+  //only allow new click if is square and is '?' - event propogation
   if (
     e.target.classList.contains("square") &&
     e.target.textContent === "?" &&
@@ -243,6 +244,7 @@ gameBox.addEventListener("mouseout", (e) => {
   }
 });
 
+//if new Game 
 gamePlayMsg.addEventListener("click", (e) => {
   //console.log(`new game ${e.target.textContent}`);
   if (e.target.textContent === "Click here for a new Game") {
