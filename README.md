@@ -20,7 +20,7 @@ As a user, I should not be able to continue playing once I win, lose, or tie
 As a user, I should be able to play the game again without refreshing the page
 
 ## **Technologies Used:**
-HTMK, CSS and JavaScript
+HTML, CSS and JavaScript
 
 ## **WireFrame and Design:**
 [WIREFRAME](https://ctrast.github.io/project1_tic_tac_toe/design/TIC%20TAC%20TOE.png)
